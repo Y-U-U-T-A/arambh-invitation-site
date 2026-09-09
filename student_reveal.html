@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Final Walk — Farewell Stage Reveal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --curtain:#2b0a10;
+    --curtain-deep:#170408;
+    --gold:#d4af37;
+    --gold-soft:#f0d585;
+    --cream:#f5ede0;
+    --spot: rgba(255, 230, 160, 0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 50% 0%, var(--spot), transparent 60%),
+      radial-gradient(ellipse at top, #4a1620 0%, var(--curtain) 45%, var(--curtain-deep) 100%);
+    font-family:'Poppins', sans-serif;
+    color:var(--cream);
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* rotating spotlight sweep */
+  .sweep{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background: conic-gradient(from 0deg at 50% -20%, transparent 0deg, rgba(255,230,160,0.10) 8deg, transparent 20deg, transparent 340deg, rgba(255,230,160,0.10) 352deg, transparent 360deg);
+    animation: rotateSweep 12s linear infinite;
+  }
+  @keyframes rotateSweep{ to{ transform: rotate(360deg);} }
+
+  .curtain-fold{
+    position:fixed; top:0; bottom:0; width:120px; z-index:1; pointer-events:none;
+    background:repeating-linear-gradient(90deg, #4a1620 0 14px, #3a0f18 14px 28px);
+    box-shadow: 0 0 60px rgba(0,0,0,.6) inset;
+  }
+  .curtain-fold.left{ left:0; }
+  .curtain-fold.right{ right:0; transform:scaleX(-1); }
+
+  .wrap{ position:relative; z-index:2; max-width:900px; margin:0 auto; padding:40px 24px 70px; text-align:center; }
+
+  .eyebrow{ letter-spacing:.4em; font-size:.75rem; color:var(--gold-soft); text-transform:uppercase; font-weight:600; opacity:.85;}
+  h1{
+    font-family:'Playfair Display', serif; font-weight:900; font-style:italic;
+    font-size:clamp(2.2rem, 6vw, 3.6rem); margin:8px 0 4px; color:var(--gold);
+    text-shadow:0 0 22px rgba(212,175,55,.4);
+  }
+  .sub{ opacity:.7; margin:0 0 30px; }
+
+  .stage{
+    background:linear-gradient(160deg, #3c1119, #2a0c13);
+    border:1px solid rgba(212,175,55,.4);
+    border-radius:22px;
+    padding:40px 30px;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    position:relative;
+    min-height:260px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+
+  .placeholder{ opacity:.5; font-size:1.05rem; }
+
+  .roll-display{
+    font-family:'Playfair Display', serif; font-weight:900; font-style:italic;
+    font-size:5rem; color:var(--gold-soft); line-height:1;
+    text-shadow:0 0 20px rgba(212,175,55,.5);
+  }
+  .roll-label{ letter-spacing:.3em; font-size:.7rem; opacity:.6; text-transform:uppercase; margin-top:6px;}
+
+  .name-reveal{
+    margin-top:18px;
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    font-size:clamp(1.8rem, 5vw, 3rem);
+    color:var(--gold);
+    opacity:0;
+    transform: scale(0.7) translateY(20px);
+  }
+  .name-reveal.show{
+    animation: nameIn .65s cubic-bezier(.2,1.4,.4,1) forwards;
+  }
+  @keyframes nameIn{
+    0%{ opacity:0; transform:scale(0.6) translateY(30px); filter:blur(6px);}
+    60%{ opacity:1; transform:scale(1.08) translateY(-4px); filter:blur(0);}
+    100%{ opacity:1; transform:scale(1) translateY(0);}
+  }
+  .welcome-line{ margin-top:10px; font-size:1rem; opacity:.8; letter-spacing:.05em; }
+
+  .gender-tag{
+    margin-top:12px;
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.85rem; font-weight:600; letter-spacing:.04em;
+    padding:5px 16px; border-radius:999px; border:1px solid;
+    background:rgba(255,255,255,.04);
+  }
+
+  .spin-anim{
+    font-family:'Playfair Display', serif; font-weight:900; font-style:italic;
+    font-size:5rem; color:var(--gold-soft); opacity:.85;
+  }
+
+  .controls{
+    display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:28px;
+  }
+  input[type=number]{
+    width:140px; padding:14px 16px; border-radius:12px; border:1px solid rgba(212,175,55,.5);
+    background:rgba(0,0,0,.25); color:var(--cream); font-size:1.1rem; text-align:center;
+    font-family:'Poppins',sans-serif; font-weight:600;
+  }
+  input[type=number]:focus{ outline:2px solid var(--gold); }
+  select{
+    padding:14px 16px; border-radius:12px; border:1px solid rgba(212,175,55,.5);
+    background:rgba(0,0,0,.25); color:var(--cream); font-size:.95rem; font-weight:600;
+    font-family:'Poppins',sans-serif;
+  }
+  select:focus{ outline:2px solid var(--gold); }
+
+  .group-grid{
+    display:flex; flex-wrap:wrap; gap:22px; justify-content:center; align-items:flex-start;
+  }
+  .group-card{
+    background:rgba(255,255,255,.04); border:1px solid rgba(212,175,55,.3); border-radius:16px;
+    padding:20px 22px; min-width:180px;
+    opacity:0; transform:scale(0.85) translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .group-card.show{ opacity:1; transform:none; }
+  .group-card .roll-display{ font-size:2rem; }
+  .group-card .name-reveal{ font-size:1.3rem; opacity:1; transform:none; animation:none; margin-top:6px; }
+  button{
+    border:none; cursor:pointer; padding:14px 26px; border-radius:12px;
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:.95rem;
+    letter-spacing:.03em; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  button:active{ transform:translateY(1px) scale(.98); }
+  .btn-gold{ background:linear-gradient(160deg, var(--gold-soft), var(--gold)); color:var(--curtain-deep); box-shadow:0 6px 18px rgba(212,175,55,.35); }
+  .btn-gold:hover{ box-shadow:0 8px 24px rgba(212,175,55,.5); }
+  .btn-ghost{ background:transparent; color:var(--gold-soft); border:1px solid rgba(212,175,55,.5) !important; }
+  .btn-ghost:hover{ background:rgba(212,175,55,.1); }
+
+  .progress-wrap{ max-width:900px; margin:34px auto 0; }
+  .progress-label{ display:flex; justify-content:space-between; font-size:.8rem; opacity:.65; margin-bottom:6px; }
+  .bar{ height:8px; border-radius:6px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .bar-fill{ height:100%; background:linear-gradient(90deg, var(--gold-soft), var(--gold)); width:0%; transition:width .5s ease; }
+
+  .chips{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(46px,1fr)); gap:8px;
+    max-width:900px; margin:22px auto 0;
+  }
+  .chip{
+    aspect-ratio:1; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:.78rem; font-weight:700; cursor:pointer; user-select:none;
+    background:rgba(255,255,255,.05); border:1px solid rgba(212,175,55,.25); color:var(--cream); opacity:.8;
+    transition:all .2s ease;
+  }
+  .chip:hover{ border-color:var(--gold); opacity:1; }
+  .chip.done{
+    background:rgba(212,175,55,.18); color:var(--gold-soft); border-color:var(--gold); opacity:.55; cursor:default;
+  }
+  .chip.done.female{ border-color:#e08fa0; box-shadow: inset 0 -3px 0 #e08fa0; }
+  .chip.done.male{ border-color:#7fb3d5; box-shadow: inset 0 -3px 0 #7fb3d5; }
+
+  .confetti-piece{
+    position:fixed; top:-20px; width:9px; height:14px; z-index:5; pointer-events:none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(110vh) rotate(720deg); opacity:.9; }
+  }
+
+  footer{ text-align:center; opacity:.4; font-size:.8rem; margin-top:40px; }
+</style>
+</head>
+<body>
+
+<div class="sweep"></div>
+<div class="curtain-fold left"></div>
+<div class="curtain-fold right"></div>
+
+<div class="wrap">
+  <div class="eyebrow">MCA Batch · Farewell 2026</div>
+  <h1>The Final Walk</h1>
+  <p class="sub">Enter a roll number or spin — walk the stage when your name lights up ✨</p>
+
+  <div class="controls" style="margin-bottom:22px;">
+    <input type="number" id="totalInput" min="1" max="56" placeholder="No. of students" value="56">
+    <button class="btn-ghost" onclick="applyTotal()">Set List Size</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <div id="stageContent">
+      <div class="placeholder">Waiting for the next name...</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input type="number" id="rollInput" min="1" max="56" placeholder="Roll No.">
+    <button class="btn-gold" onclick="revealManual()">Reveal</button>
+    <button class="btn-gold" onclick="spinRandom()">🎲 Random Spin</button>
+    <button class="btn-ghost" onclick="resetAll()">Reset All</button>
+  </div>
+
+  <div class="controls" style="margin-top:14px;">
+    <select id="genderFilter">
+      <option value="ALL">All students</option>
+      <option value="F">Female only</option>
+      <option value="M">Male only</option>
+    </select>
+    <input type="number" id="groupCount" min="1" placeholder="How many names" value="2">
+    <button class="btn-gold" onclick="revealGroup()">✨ Reveal Group</button>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Called on stage</span><span id="progressText">0 / 56</span></div>
+    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <footer>Good luck up there — make it count 🎓</footer>
+</div>
+
+<script>
+const students = [
+  ["KHUSHI KAILASH JOSHI","F"],["PRIYA BHAVESH SAGANE","F"],["SHRAVASTI SUNIL KHANDARE","F"],["PALAK DEVENDRA TATTE","F"],
+  ["SWARAJ YUVRAJ MESHRAM","M"],["ANUP ANILKUMAR PARE","M"],["ASHLESHA NARENDRA RAWALE","F"],["PURVA YOGESH PARIHAR","F"],
+  ["SURAJ RAJU MATARWAD","M"],["SRUSHTI SUDHIR FARKADE","F"],["SHREYA SANTOSH WANE","F"],["PRATIKSHA BABANRAO JADHAV","F"],
+  ["MANSWI PRAMOD PATIL","F"],["GAYATRI VISHWANATHRAO DABHADE","F"],["KARAN KOUSHAL SONI","M"],["ARCHITA SUBHASH GUPTA","F"],
+  ["ZOYA SAMAN TAHER ALI SAIYAD","F"],["MAHEK MOHDRAFIQUE BUDDHANI","F"],["BHUMIKA HOMDEVRAO GHATE","F"],["TEJASWINI BHASKAR GODE","F"],
+  ["SAHIL RAMESHRAO HINGASPURE","M"],["TANVI SATISH MARODKAR","F"],["RENUKA MACCHHINDRA DHANORKAR","F"],["DESHMUKH DNYANESHWARI HEMANT","F"],
+  ["ADITYA RAVINDRA BAND","M"],["SHRAVANI AMOL DESHMUKH","F"],["ZUBIYA UROOJ ABRAR SHAIKH","F"],["SHIVRAJ AVINASH JOSHI","M"],
+  ["PRATIKSHA NANDKISHOR DESHMUKH","F"],["ABHINAV CHANDU AGHAM","M"],["SYEDZAIDUDDIN SYED RUKMODDIN","M"],["NIVIKA DIPAKRAO TADAS","F"],
+  ["OM SANDIP BANARASE","M"],["DHANASHRI UDAY MALODE","F"],["AYUSH NITINRAO DONGARE","M"],["GAURI VIJAY PUNDE","F"],
+  ["SHREYASH PRAMOD BHOPALE","M"],["TANMAYEE SANDIP MUNGELWAR","F"],["RIYA GOVARDHAN JAZOT","F"],["PAWAN RAVI JADHAO","M"],
+  ["ABDUL RIYAZ ABDUL SADIQUE","M"],["JANHAVI DILIPRAO DESHMUKH","F"],["PURVESH VINOD BAKHADE","M"],["MADHURA SHARADRAO KANDALKAR","F"],
+  ["ANUJA PRAMOD CHIMURKAR","F"],["TOSHAN NITIN DESHMUKH","M"],["BHAVESH PRAMOD TIVHANE","M"],["SYED ATIF SYED RAZIQUE","M"],
+  ["YUVRAJ CHANDRASHEKHAR TANDAN","M"],["SAMRAT HIMMATRAO DHOLE","M"],["OMPRAKASH PARAMESHWAR BELKHEDE","M"],["SACHIN YADAVRAO MOHOD","M"],
+  ["DIPALI RAMKRUSHNA RANGOLE","F"],["DHANSHRI VINODRAO DHONDE","F"],["PRAJWAL GANESH GOTE","M"],["TEJAS VASUDEV TAKE","M"]
+];
+
+const maxAvailable = students.length; // names on file
+let total = maxAvailable;
+let done = new Array(total + 1).fill(false); // 1-indexed
+
+function applyTotal(){
+  let val = parseInt(document.getElementById('totalInput').value, 10);
+  if(!val || val < 1) val = maxAvailable;
+  if(val > maxAvailable) val = maxAvailable;
+  total = val;
+  done = new Array(total + 1).fill(false);
+  document.getElementById('rollInput').max = total;
+  buildChips();
+  updateProgress();
+  stageContent.innerHTML = `<div class="placeholder">Waiting for the next name...</div>`;
+}
+
+const chipsEl = document.getElementById('chips');
+function buildChips(){
+  chipsEl.innerHTML = '';
+  for(let i=1;i<=total;i++){
+    const c = document.createElement('div');
+    c.className = 'chip' + (done[i] ? ' done' : '');
+    c.textContent = i;
+    c.onclick = () => { if(!done[i]) revealRoll(i); };
+    c.id = 'chip-' + i;
+    chipsEl.appendChild(c);
+  }
+}
+buildChips();
+
+function updateProgress(){
+  const count = done.filter(Boolean).length;
+  document.getElementById('progressText').textContent = `${count} / ${total}`;
+  document.getElementById('barFill').style.width = (count/total*100) + '%';
+}
+
+const stageContent = document.getElementById('stageContent');
+
+function confettiBurst(){
+  const colors = ['#d4af37','#f0d585','#f5ede0','#8a2b3d'];
+  for(let i=0;i<70;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration = (2.2 + Math.random()*1.6) + 's';
+    p.style.opacity = 0.7 + Math.random()*0.3;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 4000);
+  }
+}
+
+function showName(roll){
+  const [name, gender] = students[roll-1];
+  const isFemale = gender === 'F';
+  const genderLabel = isFemale ? 'Female' : 'Male';
+  const genderIcon = isFemale ? '♀' : '♂';
+  const genderColor = isFemale ? '#e08fa0' : '#7fb3d5';
+
+  done[roll] = true;
+  const chip = document.getElementById('chip-'+roll);
+  if(chip){
+    chip.classList.add('done', isFemale ? 'female' : 'male');
+  }
+  updateProgress();
+
+  stageContent.innerHTML = `
+    <div class="roll-display">#${String(roll).padStart(2,'0')}</div>
+    <div class="roll-label">Roll Number</div>
+    <div class="name-reveal" id="nameEl">${name}</div>
+    <div class="gender-tag" id="genderTag" style="color:${genderColor}; border-color:${genderColor}66;">
+      <span style="font-size:1.1em;">${genderIcon}</span> ${genderLabel}
+    </div>
+    <div class="welcome-line" id="welcomeLine" style="opacity:0">🎓 Please welcome them to the stage!</div>
+  `;
+  requestAnimationFrame(()=>{
+    document.getElementById('nameEl').classList.add('show');
+    setTimeout(()=>{ document.getElementById('welcomeLine').style.transition='opacity .6s ease'; document.getElementById('welcomeLine').style.opacity=1; }, 500);
+  });
+  confettiBurst();
+}
+
+function revealRoll(roll){
+  if(roll < 1 || roll > total){
+    stageContent.innerHTML = `<div class="placeholder">Enter a number between 1 and ${total}.</div>`;
+    return;
+  }
+  if(done[roll]){
+    // already called — just show again without re-marking or confetti spam
+    const [name, gender] = students[roll-1];
+    const isFemale = gender === 'F';
+    const genderColor = isFemale ? '#e08fa0' : '#7fb3d5';
+    stageContent.innerHTML = `
+      <div class="roll-display">#${String(roll).padStart(2,'0')}</div>
+      <div class="roll-label">Already called</div>
+      <div class="name-reveal show">${name}</div>
+      <div class="gender-tag" style="color:${genderColor}; border-color:${genderColor}66;">
+        <span style="font-size:1.1em;">${isFemale ? '♀' : '♂'}</span> ${isFemale ? 'Female' : 'Male'}
+      </div>
+    `;
+    return;
+  }
+  showName(roll);
+}
+
+function revealManual(){
+  const val = parseInt(document.getElementById('rollInput').value, 10);
+  if(!val){ stageContent.innerHTML = `<div class="placeholder">Type a roll number first.</div>`; return; }
+  revealRoll(val);
+  document.getElementById('rollInput').value = '';
+}
+
+function spinRandom(){
+  const remaining = [];
+  for(let i=1;i<=total;i++) if(!done[i]) remaining.push(i);
+  if(remaining.length === 0){
+    stageContent.innerHTML = `<div class="placeholder">🎉 Everyone has walked the stage!</div>`;
+    return;
+  }
+  const finalRoll = remaining[Math.floor(Math.random()*remaining.length)];
+
+  let ticks = 0;
+  const maxTicks = 22;
+  stageContent.innerHTML = `<div class="spin-anim" id="spinNum">--</div><div class="roll-label">Spinning...</div>`;
+  const spinEl = document.getElementById('spinNum');
+
+  function tick(){
+    ticks++;
+    const r = remaining[Math.floor(Math.random()*remaining.length)];
+    spinEl.textContent = String(r).padStart(2,'0');
+    if(ticks < maxTicks){
+      const delay = 40 + (ticks/maxTicks)*140; // ease out
+      setTimeout(tick, delay);
+    } else {
+      spinEl.textContent = String(finalRoll).padStart(2,'0');
+      setTimeout(()=> showName(finalRoll), 350);
+    }
+  }
+  tick();
+}
+
+function revealGroup(){
+  const filter = document.getElementById('genderFilter').value; // ALL / F / M
+  let count = parseInt(document.getElementById('groupCount').value, 10);
+  if(!count || count < 1) count = 1;
+
+  const pool = [];
+  for(let i=1;i<=total;i++){
+    if(done[i]) continue;
+    const g = students[i-1][1];
+    if(filter === 'ALL' || g === filter) pool.push(i);
+  }
+
+  if(pool.length === 0){
+    stageContent.innerHTML = `<div class="placeholder">No remaining students match that filter.</div>`;
+    return;
+  }
+  if(count > pool.length) count = pool.length;
+
+  // pick `count` unique rolls from pool
+  const picked = [];
+  const poolCopy = [...pool];
+  while(picked.length < count && poolCopy.length > 0){
+    const idx = Math.floor(Math.random()*poolCopy.length);
+    picked.push(poolCopy.splice(idx,1)[0]);
+  }
+
+  const cardsHtml = picked.map(roll => {
+    const [name, gender] = students[roll-1];
+    const isFemale = gender === 'F';
+    const genderColor = isFemale ? '#e08fa0' : '#7fb3d5';
+    return `
+      <div class="group-card" data-roll="${roll}">
+        <div class="roll-display">#${String(roll).padStart(2,'0')}</div>
+        <div class="roll-label">Roll Number</div>
+        <div class="name-reveal">${name}</div>
+        <div class="gender-tag" style="color:${genderColor}; border-color:${genderColor}66;">
+          <span style="font-size:1.1em;">${isFemale ? '♀' : '♂'}</span> ${isFemale ? 'Female' : 'Male'}
+        </div>
+      </div>`;
+  }).join('');
+
+  stageContent.innerHTML = `<div class="group-grid">${cardsHtml}</div>`;
+
+  picked.forEach((roll, i) => {
+    done[roll] = true;
+    const chip = document.getElementById('chip-'+roll);
+    const gender = students[roll-1][1];
+    if(chip) chip.classList.add('done', gender === 'F' ? 'female' : 'male');
+
+    const card = document.querySelector(`.group-card[data-roll="${roll}"]`);
+    if(card){
+      const delay = i * 150;
+      setTimeout(() => {
+        // double rAF so the browser registers the initial (hidden) state
+        // before switching to the visible one, guaranteeing the transition fires
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          card.classList.add('show');
+        }));
+      }, delay);
+      // safety net: force it visible even if something above didn't fire
+      setTimeout(() => card.classList.add('show'), delay + 900);
+    }
+  });
+
+  updateProgress();
+  confettiBurst();
+}
+
+function resetAll(){
+  for(let i=0;i<=total;i++) done[i] = false;
+  buildChips();
+  updateProgress();
+  stageContent.innerHTML = `<div class="placeholder">Waiting for the next name...</div>`;
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
